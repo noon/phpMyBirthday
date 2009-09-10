@@ -1,0 +1,24 @@
+<?php
+    $this->dojo()->enable();
+    Zend_Dojo_View_Helper_Dojo::setUseDeclarative();
+    
+?>
+<!--  
+<div dojoType="birthday.widget.UserManager">
+    <span style="display: none" id="additionalData">{b: "b"}</span>
+	<input type="hidden" name="id" value="<?php echo $this->escape($this->userData['id']); ?>" />
+	First name:<br />
+	<div dojoType="dijit.form.ValidationTextBox" name="firstname" value="<?php echo $this->escape($this->userData['firstname']); ?>"></div>
+	<br />Last name:<br />
+	<div dojoType="dijit.form.ValidationTextBox" name="secondname" value="<?php echo $this->escape($this->userData['secondname']); ?>"></div>
+	<br />Date of  birth:<br />
+	<div dojoType="dijit.form.DateTextBox" name="birthday" value="<?php echo $this->escape($this->userData['birthday']); ?>"></div>
+	<br />
+	<br />
+	<br />
+	<button dojoType="dijit.form.Button">Save</button>
+</div>
+//-->
+<div dojoType="birthday.widget.UserManager">
+
+</div>

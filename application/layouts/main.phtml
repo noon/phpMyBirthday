@@ -1,0 +1,86 @@
+<?php
+
+/**
+ * Birhtday Calendar layout
+ *  
+ * @author
+ * @version
+ */
+
+echo '<?xml version="1.0" encoding="UTF-8" ?>';
+echo $this->doctype();
+?>
+
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <?php 
+            echo $this->headTitle('phpMyBirthday');
+            $this->headLink()->appendStylesheet('/css/main.css')
+                 ->headLink(array('rel' => 'favicon',
+                                  'href' => '/img/favicon.ico'),
+                                  'PREPEND');
+            echo $this->headLink();
+            // Check if dojo library is needed
+            if ($this->dojo()->isEnabled()) {
+                // include dojo library
+                $this->dojo()->setLocalPath('/scripts/dojo/dojo/dojo.js')
+                ->setDjConfigOption('isDebug', false) 
+                ->setDjConfigOption('parseOnLoad', true) 
+                // Use dojo theme tundra
+                ->addStyleSheetModule('dijit.themes.tundra')
+                ->registerModulePath("birthday", "/scripts/dojo/birthday");
+                // Echo out the dojo <script> tags
+                echo $this->dojo();	
+            }
+        ?>
+        <script type="text/javascript">
+        (function(d){
+            var addCode = function(code, andAppend){
+                // pondering: can i do the andAppend check here? will the e.text/etc work if it's in the DOM first?
+                var e = d.create("script", { type:"text/javascript" }),
+                    // jump through the cross-browser hoops:
+                    how = "text" in e ? "text" : "textContent" in e ? "textContent" : "innerHTML" in e ? "innerHTML" : "appendChild";
+                    if(how == "appendChild"){
+                        e[how](d.doc.createTextNode(code));
+                    }else{
+                        e[how] = code;
+                    }
+
+                    if(andAppend){
+                        d.doc.getElementsByTagName("head")[0].appendChild(e);
+                    }
+
+                    return e;
+            };
+
+            dojo.declare("dojo.Script", null, {
+                // summary: A Widget to wrap around JavaScript to be injected into ContentPanes
+                // to ensure they are executed. This is unneeded if the pane is a
+                // dojox.layout.ContentPane
+                //
+                // description:
+                //
+                // example:
+                // <div dojoType='dojo.Script'>alert('foo');<div>
+                //
+                    constructor: function(args, node){
+                            node = d.byId(node);
+                            if(node && node.innerHTML){
+                                    // hide the content asap
+                                    d.style(node, "display", "none");
+                                    addCode(node.innerHTML, true);
+                            }
+                    }
+            });
+         })(dojo);
+        </script>
+    </head>
+
+    <body class="tundra">
+        <img alt="logo" src="/img/icon.png">
+        <div id="contentMain">
+            <?php echo $this->layout()->content; ?>
+        </div>
+    </body>
+</html>

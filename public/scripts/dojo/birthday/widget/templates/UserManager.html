@@ -1,0 +1,19 @@
+<div>
+    <div dojoAttachPoint="contentNode">
+        <div style="display: none;" dojoType="dijit.form.ValidationTextBox" id="id" name="id" value=""></div>
+        <div dojoType="dijit.form.ValidationTextBox" id="firstname" name="firstname" value=""></div>
+        <br />Last name:<br />
+        <div dojoType="dijit.form.ValidationTextBox" id="secondname" name="secondname" value=""></div>
+        <br />Date of  birth:<br />
+        <div dojoType="dijit.form.DateTextBox" id="birthdate" name="birthdate" value=""></div>    
+    </div>
+    <div dojoAttachPoint="additionalDataNode">
+    </div>
+    <div dojoAttachPoint="saveButtonNode" dojoAttachEvent="onclick:saveUser">
+        <button dojoType="dijit.form.Button">Save</button>
+    </div>    
+    
+    <div style="display: none" dojoAttachPoint="deleteButtonNode" dojoAttachEvent="onclick:deleteUser">
+        <button dojoType="dijit.form.Button">Delete</button>
+    </div>       
+</div>

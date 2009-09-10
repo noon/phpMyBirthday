@@ -1,0 +1,54 @@
+/** 
+ * Initial CSS file for the most incredible application of the 
+ * barcamp 2009.
+ */
+
+@import url("../scripts/dojo/dojox/grid/resources/Grid.css");
+@import url("../scripts/dojo/dojox/grid/resources/tundraGrid.css");
+
+.specialBirthday {
+    font-weight: bold;
+    font-style: italic;
+    color: red;
+}
+
+.dijitButtonContents {
+    width:100px;
+}
+
+table.calendar {
+    border-spacing:0;
+    border-collapse:collapse;
+}
+
+td.leftCol {
+    padding-left:3px;
+    width: 90px;
+    border: 1px solid #9B9B9B;
+    border-right: 0px none;
+}
+
+td.middleCol {
+    width: 490px;
+    border: 1px solid #9B9B9B;
+    border-left: 0px none;
+    border-right: 0px none;
+}
+td.rightCol {
+    width: 60px;
+    border: 1px solid #9B9B9B;
+    border-left: 0px none; 
+}
+div.leftCol {
+    float:left;
+    padding-top:10px;
+}
+div.rightCol {
+    float:left;
+    padding-left:15px;
+    padding-top:10px;
+}
+a:link, a:active, a:hover, a:visited {
+    text-decoration:none;
+    color:black;
+}

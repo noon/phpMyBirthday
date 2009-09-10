@@ -1,0 +1,183 @@
+<?php
+
+    // enable and laoding the needed dojo stuff
+    $this->dojo()->enable();
+    $this->dojo()->requireModule('dijit.Dialog');
+    $this->dojo()->requireModule('dijit.form.Button');
+    $this->dojo()->requireModule('dijit.layout.TabContainer');
+    $this->dojo()->requireModule('dojox.grid.DataGrid');
+    $this->dojo()->requireModule('dojo.data.ItemFileWriteStore');
+    $this->dojo()->requireModule('dijit.form.Form');
+    $this->dojo()->requireModule('dijit.form.ValidationTextBox');
+    $this->dojo()->requireModule('dijit.form.DateTextBox');
+    $this->dojo()->requireModule('birthday.widget.UserManager');
+
+?>
+
+<script>
+function specialBirthday(value) {
+    var age = value % 10;
+    if (value >= 10 &&  (!age || value == 18)) {
+        return "<span class='specialBirthday'>" + value + "</span>";
+    } else {
+        return "<span>" + value + "</span>";
+    }
+}
+
+function addBirthday(day, month, year)
+{
+    var data = { day: day, month: month, year: year };
+    dijit.byId('userManager').addUser(data);
+
+    
+    dijit.byId('userEditDialog').attr('title', "Add an user");
+    dijit.byId('userEditDialog').show();
+}
+
+function editBirthday(userId)
+{
+    console.debug(userId);
+    dijit.byId('userManager').editUser(userId);
+    dijit.byId('userEditDialog').attr('title', "Edit an existing user");
+    dijit.byId('userEditDialog').show();
+}
+
+function deleteBirthday(userId)
+{
+    dijit.byId('userManager').deleteUserById(userId);
+    location.href = "/";
+}
+
+function getEditLink(val)
+{      
+    return "<span onclick='editBirthday(" + val + ");'>Edit</span>";
+}
+
+function importVCard() {
+	dijit.byId('importDialog').attr('href', '/import');
+    dijit.byId('importDialog').show();
+}
+
+dojo.addOnLoad(
+    function()
+    {
+        <?php
+        if ($this->currentMonth == $this->selectedMonth) {?>
+            dojo.byId('d' + <?php echo $this->currentDay;?>).style.background = '#E0E0FC';
+        <?php } else {?>
+            dojo.byId('m' + <?php echo $this->currentMonth;?>).parentNode.style.background = '#E0E0FC';
+        <?php }?>
+        dojo.byId('m' + <?php echo $this->selectedMonth;?>).parentNode.style.background = '#FFFFFF url(/scripts/dojo/dijit/themes/tundra/images/buttonActive.png) repeat-x scroll left top';
+        dojo.byId('m' + <?php echo $this->selectedMonth;?>).parentNode.style.border = '1px solid black';
+    }
+);
+
+</script>
+
+<div id="userEditDialog" dojoType="dijit.Dialog" style="width: 350px; height: 400px">
+    <div dojoType="birthday.widget.UserManager" id="userManager">
+    </div>
+</div>
+
+
+<div dojoType="dijit.layout.TabContainer" style="width: 100%;" doLayout="false" >
+    <div dojoType="dijit.layout.ContentPane" title="Kalender" selected="true" id="My_first_tab" >
+
+        <div dojoType="dijit.layout.ContentPane">
+            <button class="month" id="m1" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Januar')?>';">Januar</button>
+            <button class="month" id="m2" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Februar')?>';">Februar</button>
+            <button class="month" id="m3" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('März')?>';">M&auml;rz</button>
+            <button class="month" id="m4" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('April')?>';">April</button>
+            <button class="month" id="m5" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Mai')?>';">Mai</button>
+            <button class="month" id="m6" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Juni')?>';">Juni</button>
+            <button class="month" id="m7" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Juli')?>';">Juli</button>
+            <button class="month" id="m8" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('August')?>';">August</button>
+            <button class="month" id="m9" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('September')?>';">September</button>
+            <button class="month" id="m10" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Oktober')?>';">Oktober</button>
+            <button class="month" id="m11" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('November')?>';">November</button>
+            <button class="month" id="m12" dojoType="dijit.form.Button" onclick="location.href = '/index/index/month/<?php echo urlencode('Dezember')?>';">Dezember</button>
+        </div>
+
+        <div class="leftCol">
+            <?php $count1 = ceil(sizeof($this->month) / 2);?>
+            <table class="calendar">
+                <?php
+                for ($i = 1; $i <= $count1;$i++) {?>
+                    <tr id = "d<?php echo $i?>">
+                        <td class="leftCol"><?php echo $this->month[$i]['date'];?></td>
+                        <td class="middleCol">
+                        <?php
+                            if (!is_null($this->month[$i]['user'])) {
+                                foreach ($this->month[$i]['user'] as $user) {?>
+                                    <a href="javascript:void(0);" onclick="editBirthday(<?php echo $user['id'];?>)">
+                                        <?php echo $user['firstname'] . ' ' .  $user['secondname'] . ' (' . $user['age'] . ')';?>
+                                    </a>&emsp;
+                                <?php }
+                            }?>
+                        </td>
+                        <td class="rightCol">
+                            <button dojoType="dijit.form.Button" onclick="addBirthday(<?php echo strtr($this->month[$i]['date'], ".", ",");?>);">
+                                Hinzufügen
+                            </button>
+                        </td>
+                    </tr>
+                <?php }?>
+            </table>
+        </div>
+
+        <div  class="rightCol">
+            <?php $count2 = sizeof($this->month) - $count1;?>
+            <table class="calendar">
+                <?php
+                for ($i = $count1 +1; $i <= $count2 + $count1;$i++) {?>
+                    <tr id = "d<?php echo $i?>">
+                        <td class="leftCol"><?php echo $this->month[$i]['date'];?></td>
+                        <td class="middleCol">
+                        <?php
+                            if (!is_null($this->month[$i]['user'])) {
+                                foreach ($this->month[$i]['user'] as $user) {?>
+                                    <a href="javascript:void(0);" onclick="editBirthday(<?php echo $user['id'];?>)">
+                                        <?php echo $user['firstname'] . ' ' .  $user['secondname'] . ' (' . $user['age'] . ')';?>
+                                    </a>&emsp;
+                                <?php }
+                            }?>
+                        
+                        <?php
+                         $birthdayParameters =  "'" . implode("','", explode(".", $this->month[$i]['date'])) . "'";
+                         ?>
+                        </td>
+                        <td class="rightCol">
+                            <button dojoType="dijit.form.Button" onclick="addBirthday(<?php echo strtr($this->month[$i]['date'], ".", ",");?>);">
+                                Hinzufügen
+                            </button>
+                        </td>
+                    </tr>
+                <?php }?>
+            </table>
+        </div>
+    </div>
+
+    <div dojoType="dijit.layout.ContentPane" title="Benutzerliste" selected="true" id="My_second_tab" >
+        <strong>Alle Geburtstage in der &Uuml;bersicht</strong>
+        <span dojoType="dojo.data.ItemFileReadStore" jsId="userOverviewStore" url='/index/grid'></span>
+        <table dojoType="dojox.grid.DataGrid" store="userOverviewStore" jsid="grid" id="grid" rowSelector="0px" autoHeight="25">
+            <thead>
+            <tr>
+                <th field="firstname" classes="firstname" noresize="false" width="120px;">Vorname</th>
+                <th field="secondname" classes="secondname" noresize="false" width="120px;">Nachname</th>
+                <th field="birthdate" classes="birthdate" noresize="false" width="120px;">Geburtsdatum</th>
+                <th field="age" classes="age" noresize="false" width="120px;" formatter="specialBirthday">Alter</th>
+                <th field="id" classes="id" noresize="false" width="120px;" formatter="getEditLink">Edit</th>
+            </tr>
+            </thead>
+       </table>
+        <br />
+    </div>
+    <div dojoType="dijit.layout.ContentPane" title="Import/ Export" selected="true" id="import" >
+    <div id="importDialog" dojoType="dijit.Dialog" title="Import VCard" style="width: 350px; height: 400px"></div>
+    <ul>
+        <li><a href="/export">iCal export</a></li>
+        <li><a href="#" onclick="importVCard();">Import VCard</a></li>
+    </ul>
+    </div>
+</div>
