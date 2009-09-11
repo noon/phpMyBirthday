@@ -1,6 +1,6 @@
 
 --
--- Testdaten fÃ¼r Tabelle `user`
+-- Testdaten für Tabelle `user`
 --
 
 INSERT INTO `user` (`id`, `firstname`, `secondname`, `birthdate`) VALUES

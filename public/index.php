@@ -10,7 +10,7 @@ defined('APPLICATION_ENV')
 
 // Ensure library/ is on include_path
 set_include_path(implode(PATH_SEPARATOR, array(
-    realpath(APPLICATION_PATH . '/../library/ZendFramework-1.8.0/library'),
+    realpath(APPLICATION_PATH . '/../library'),
     get_include_path(),
 )));
 

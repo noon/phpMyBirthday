@@ -2,13 +2,13 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL';
 
-CREATE SCHEMA IF NOT EXISTS `barcamp` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
-USE `barcamp`;
+CREATE SCHEMA IF NOT EXISTS `pmb` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+USE `pmb`;
 
 -- -----------------------------------------------------
--- Table `barcamp`.`user`
+-- Table `pmb`.`user`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `barcamp`.`user` (
+CREATE  TABLE IF NOT EXISTS `pmb`.`user` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `firstname` VARCHAR(255) NOT NULL ,
   `secondname` VARCHAR(255) NOT NULL ,
@@ -20,9 +20,9 @@ COLLATE = utf8_general_ci;
 
 
 -- -----------------------------------------------------
--- Table `barcamp`.`property`
+-- Table `pmb`.`property`
 -- -----------------------------------------------------
-CREATE  TABLE IF NOT EXISTS `barcamp`.`property` (
+CREATE  TABLE IF NOT EXISTS `pmb`.`property` (
   `id` INT UNSIGNED NOT NULL AUTO_INCREMENT ,
   `key` VARCHAR(255) NOT NULL ,
   `value` LONGTEXT NOT NULL ,
@@ -31,7 +31,7 @@ CREATE  TABLE IF NOT EXISTS `barcamp`.`property` (
   INDEX `fk_property_user` (`user_id` ASC) ,
   CONSTRAINT `fk_property_user`
     FOREIGN KEY (`user_id` )
-    REFERENCES `barcamp`.`user` (`id` )
+    REFERENCES `pmb`.`user` (`id` )
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
